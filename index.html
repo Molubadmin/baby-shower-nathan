@@ -182,10 +182,11 @@
 
   function tryPlay() {
     const p = vid.play();
-    if (p && p.catch) p.catch(() => { playBtn.hidden = false; });
+    if (p && p.catch) p.catch(() => { setTimeout(() => { if (vid.paused) playBtn.hidden = false; }, 300); });
   }
   vid.muted = true;
   vid.addEventListener("playing", () => { playBtn.hidden = true; });
+  vid.addEventListener("timeupdate", () => { if (!vid.paused) playBtn.hidden = true; });
   vid.addEventListener("loadeddata", tryPlay);
   setTimeout(() => { if (vid.paused) playBtn.hidden = false; }, 2500);
   tryPlay();
